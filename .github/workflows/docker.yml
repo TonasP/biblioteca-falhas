@@ -1,29 +1,20 @@
-name: Build, Compile Java, Scan, and Publish Docker Image
+name: Build, Scan, and Publish Docker Image
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build-compile-scan-push:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       # 1️⃣ Checkout do código
+      # O Docker precisa do Dockerfile e da pasta 'src'
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Configurar Java (ex: OpenJDK 17)
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      # 3️⃣ Compilar arquivos Java (Maven)
-      - name: Compile Java
-        run: mvn clean compile
-
-      # 5️⃣ Login no GitHub Container Registry
+      # 2️⃣ Login no GitHub Container Registry
+      # Precisa vir ANTES de tentar dar build ou push
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
@@ -31,11 +22,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 6️⃣ Build da imagem Docker
+      # 3️⃣ Build da imagem Docker
+      # O Dockerfile (Stage 1) vai cuidar de compilar o Java
       - name: Build Docker image
         run: docker build -t ghcr.io/${{ github.repository_owner }}/biblioteca-falhas:latest .
 
-
-      # 8️⃣ Push da imagem Docker para GHCR
+      # 4️⃣ Push da imagem Docker para GHCR
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.repository_owner }}/biblioteca-falhas:latest
