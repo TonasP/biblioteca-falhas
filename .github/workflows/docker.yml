@@ -19,14 +19,14 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: tonasp
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # 3️⃣ Build da imagem Docker
       # O Dockerfile (Stage 1) vai cuidar de compilar o Java
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/biblioteca-falhas:latest .
+        run: docker build -t ghcr.io/tonasp/biblioteca-falhas:latest .
 
       # 4️⃣ Push da imagem Docker para GHCR
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository_owner }}/biblioteca-falhas:latest
+        run: docker push ghcr.io/tonasp/biblioteca-falhas:latest
