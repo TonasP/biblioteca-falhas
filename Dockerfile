@@ -6,6 +6,10 @@ WORKDIR /app
 COPY pom.xml .
 
 # Build do projeto (gera o JAR)
+RUN mvn dependency:go-offline
+
+COPY src ./src
+
 RUN mvn clean package -DskipTests
 
 # ===== Stage 2: Runtime =====
