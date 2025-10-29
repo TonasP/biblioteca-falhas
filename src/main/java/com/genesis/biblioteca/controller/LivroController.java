@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "https://biblioteca-frontend-5nvp.vercel.app")
+@CrossOrigin(origins = "https://biblioteca-frontend-szpw.vercel.app/")
 @RestController
 @RequestMapping("/livros")
 public class LivroController {
